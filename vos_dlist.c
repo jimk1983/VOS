@@ -16,14 +16,18 @@
     修改内容   : 创建文件
 
 ******************************************************************************/
-#include <vos/vos_pub.h>
-#include <vos/vos_log.h>
+#include <vos_pub.h>
+#include <vos_log.h>
 
 
 #define DLIST_HEAD_INIT(name) { &(name), &(name) }
 #define DLIST_HEAD_NEW(name) \
               struct VOS_DLIST_NODE_S name = DLIST_HEAD_INIT(name);
 
+			  
+			  
+			  
+			  
      
 /*初始化节点*/
 INT32 VOS_Node_Init(VOS_DLIST_NODE_S *pstNode)

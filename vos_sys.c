@@ -16,7 +16,7 @@
     修改内容   : 创建文件
 
 ******************************************************************************/
-#include <vos/vos_pub.h>
+#include <vos_pub.h>
 
 VOS_THREAD_T VOS_Thread_Create(CHAR *pcName, VOID(* pfvThread)(VOID *arg), VOID *pvArg, INT32 iStacksize, INT32 iPrio)
 {

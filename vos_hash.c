@@ -16,8 +16,8 @@
     修改内容   : 创建文件
 
 ******************************************************************************/
-#include <vos/vos_pub.h>
-#include <vos/vos_log.h>
+#include <vos_pub.h>
+#include <vos_log.h>
 
 
 /*素数数组*/

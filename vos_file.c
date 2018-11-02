@@ -17,7 +17,7 @@
     修改内容   : 创建文件
 
 ******************************************************************************/
-#include <vos/vos_pub.h>
+#include <vos_pub.h>
 
 /*LINUX下的errno含义*/
 #define VOS_ERRNO_FILEORDIRNOTEXIST     2               /*创建的目录或者文件有级数不存在，无法创建*/

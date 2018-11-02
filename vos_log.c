@@ -18,7 +18,7 @@
     修改内容   : 创建文件
 
 ******************************************************************************/
-#include <vos/vos_pub.h>
+#include <vos_pub.h>
 #include <default_def.h>
 
 VOS_RW_LOCK_S   stLogLock;

@@ -16,7 +16,7 @@
     修改内容   : 创建文件
 
 ******************************************************************************/
-#include <vos/vos_pub.h>
+#include <vos_pub.h>
 
 /*主要用于Rct架构中的消息，因此有个索引号*/
 VOS_MSG_QUE_S *VOS_Rct_MsgQueCreate(UINT32 uiIndex)

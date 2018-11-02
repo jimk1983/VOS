@@ -33,8 +33,8 @@
     修改内容   : 新生成函数
 
 *****************************************************************************/
-#include <vos/vos_pub.h>
-#include <vos/vos_log.h>
+#include <vos_pub.h>
+#include <vos_log.h>
 
 
 /*获取系统所有的路由表信息
