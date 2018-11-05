@@ -28,8 +28,8 @@ function pdt_lib_compile
 	echo "make $1"
          vosfmake $1
 	
-	#cp 	$ROOTDIR/output/bin/vos/libvos.a $ROOTDIR/archpform/lib/
-	#rm -rf $ROOTDIR/output/bin/vos/* 
+	cp 	$ROOTDIR/output/bin/libvos.a $ROOTDIR/../LinuxUpServer/libs/bin/
+	echo "copy libvos.a compeleted!"
 }
 
 pdt_lib_compile libvos
