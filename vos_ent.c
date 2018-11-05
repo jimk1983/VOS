@@ -27,21 +27,12 @@ LONG VOS_EnvInit()
         VOS_Printf("vos Memory Mgmt init error!");
         return VOS_ERR;
     }
-
-     if ( VOS_ERR == VOS_Log_Init() )
-    {
-        VOS_Printf("vos log init error!");
-        VOS_MemMgmt_UnInit();
-        return VOS_ERR;
-    }
-    
-     return VOS_OK;
+    return VOS_OK;
 }
 
 
 VOID VOS_EnvUnInit()
 {
     VOS_MemMgmt_UnInit();
-    VOS_Log_UnInit();
 }
 
