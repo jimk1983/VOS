@@ -140,9 +140,9 @@ VOS_TIMER_T VOS_TimerCreate(UINT32 uiMilliTimes, pfVosTimerHandlerCb pfTimerHand
 
     INT32      iSecs    = 0;
     INT32      iNsecs   = 0;
-    struct itimerspec   stTimerSpc;
-    timer_t             timerid;
-    struct sigevent     stSigEvt;   /*__SIGRTMIN --__SIGRTMAX之间*/
+    struct itimerspec   stTimerSpc={0};
+    struct sigevent     stSigEvt={0};   /*__SIGRTMIN --__SIGRTMAX之间*/
+    timer_t             timerid = 0;
 
     hTimerHandle = (VOS_TIMER_T)VOS_Malloc(0, sizeof(struct tagLinuxVosTimer));
 	if (NULL == hTimerHandle)
@@ -156,6 +156,7 @@ VOS_TIMER_T VOS_TimerCreate(UINT32 uiMilliTimes, pfVosTimerHandlerCb pfTimerHand
     
     signal(SIGUSR1, VOS_TimerWorker);
 #endif
+    VOS_Mem_Zero((CHAR *)&stSigEvt, sizeof(stSigEvt));
 
     /*线程派驻方式*/
     stSigEvt.sigev_value.sival_ptr = hTimerHandle;
