@@ -99,7 +99,7 @@ INT32 VOS_EPOLL_Ctrl(INT32 lEpollFd, INT32 lSockfd, UINT32 ulEpollCtl, UINT32 ul
              }
              else
              {
-                stEvent.events &= ~(EPOLLIN);
+                stEvent.events &= ~(EPOLLIN);   //LT´¥·¢£¬·ÇET´¥·¢
              }
 
              if (ulEpollMask & VOS_EPOLL_MASK_POLLOUT)

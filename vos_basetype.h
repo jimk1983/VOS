@@ -125,7 +125,6 @@ typedef unsigned char BOOL;
 /*ÒÑ¾­´æÔÚ*/
 #define VOS_SYS_EXIST         -6
 
-
 #ifndef VOS_TRUE
 #define VOS_TRUE 1
 #endif
