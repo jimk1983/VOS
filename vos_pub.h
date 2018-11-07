@@ -41,4 +41,6 @@
 #include <vos_pevt.h>
 #include <vos_mpools.h>
 #include <vos_shm.h>
+#include <vos_timer.h>
+
 
