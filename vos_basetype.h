@@ -19,6 +19,9 @@
 #ifndef _VOS_BASETYPE_H_
 #define _VOS_BASETYPE_H_
 
+#ifndef POINTER
+typedef unsigned char *POINTER;
+#endif
 
 /*char 表示无符号的整数, Unicode码占2个字节*/
 #ifndef CHAR
@@ -50,7 +53,10 @@ typedef unsigned char   UCHAR;
 typedef unsigned short  USHORT;
 #endif
 
-    
+#ifndef USHORT
+typedef unsigned short  USHORT;
+#endif
+       
 #ifndef ULONG
 typedef unsigned long    ULONG;
 #endif

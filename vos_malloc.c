@@ -47,7 +47,7 @@ CHAR *VOS_Memory(ULONG ulSize)
 }
 
 /*ƒ⁄¥Ê«Â¡„*/
-VOID VOS_Mem_Zero(CHAR *pcBuf, ULONG ulSize)
+VOID VOS_Mem_Zero(VOID *pcBuf, ULONG ulSize)
 {
     if ( (0 == ulSize) || (NULL == pcBuf) )
     {
