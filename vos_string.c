@@ -77,6 +77,39 @@ CHAR *VOS_StrCpy_S(CHAR *pcDst, ULONG ulMaxLen, CHAR *pcSrc)
     return strcpy(pcDst,pcSrc);
 }
 
+CHAR *VOS_StrCat(CHAR *dest, const CHAR *src)
+{
+    CHAR *tmp = dest;
+    
+    while(*dest)dest++;
+    
+    while((*dest++ = *src++) != '\0');
+
+    return tmp;
+}
+
+
+CHAR *VOS_StrNCat(CHAR *dest, const CHAR *src, INT32 iCount)
+{
+    CHAR *tmp = dest;
+
+    if (iCount) 
+    {
+        while(*dest)dest++;
+        
+        while ((*dest++ = *src++) != 0) 
+        {
+            if (--iCount == 0)
+            {
+                *dest = '\0';
+                break;
+            }
+        }
+    }
+    return tmp;
+}
+
+
 CHAR *VOS_StrNCpy_S(CHAR *pcDst, ULONG ulMaxLen,CHAR *pcSrc, ULONG ulLen)
 {
     if ( NULL == pcDst

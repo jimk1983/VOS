@@ -23,7 +23,6 @@
 #define VOS_ERRNO_FILEORDIRNOTEXIST     2               /*创建的目录或者文件有级数不存在，无法创建*/
 #define VOS_ERRNO_FILEISEXIST                   17             /*该文件已经存在*/
 
-
 /*检查文件是否存在*/
 #define VOS_ERR_ACCESS_ISEXIST                0
 
@@ -64,6 +63,48 @@ LONG VOS_DirIsExist(const CHAR *pcDirPath)
     closedir(dir);
 #endif
     /*打开成功表示存在*/
+    return VOS_OK;
+}
+
+
+/*****************************************************************************
+ 函 数 名  : VOS_DirGetCurrentPath
+ 功能描述  : 获取当前的目录
+ 输入参数  : CHAR *pcDirPath  
+ 输出参数  : 无
+ 返 回 值  : 
+ 调用函数  : 
+ 被调函数  : 
+ 
+ 修改历史      :
+  1.日    期   : 2018年11月9日
+    作    者   : 蒋康
+    修改内容   : 新生成函数
+
+*****************************************************************************/
+LONG VOS_DirGetCurrentPath(CHAR *pcDirPath, INT32 iMaxLen)
+{
+    INT32 iRet  = 0;
+    INT32 index = 0;
+    
+#if VOS_PLAT_LINUX
+    iRet = readlink("/proc/self/exe", pcDirPath, iMaxLen);
+    if (iRet < 0 || iRet >= iMaxLen)
+    {
+        return VOS_ERR;
+    }
+
+    //获取当前目录绝对路径，即去掉程序名
+    for (index = iRet; index >=0; --index)
+    {
+        if ( pcDirPath[index] == '/')
+        {
+            pcDirPath[index+1] = '\0';
+
+            break;
+        }
+    }
+#endif
     return VOS_OK;
 }
 
