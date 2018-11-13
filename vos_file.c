@@ -105,6 +105,7 @@ LONG VOS_DirGetCurrentPath(CHAR *pcDirPath, INT32 iMaxLen)
         }
     }
 #endif
+
     return VOS_OK;
 }
 
@@ -541,6 +542,110 @@ LONG VOS_FileRemove(CHAR *pcFilePath)
 
     return VOS_OK;
 }
+
+
+/*****************************************************************************
+ 函 数 名  : VOS_FileGetSize
+ 功能描述  : 获取文件大小
+ 输入参数  : CHAR *pcFullName  
+ 输出参数  : 无
+ 返 回 值  : 
+ 调用函数  : 
+ 被调函数  : 
+ 
+ 修改历史      :
+  1.日    期   : 2018年11月10日
+    作    者   : 蒋康
+    修改内容   : 新生成函数
+
+*****************************************************************************/
+UINT32 VOS_FileGetSize(CHAR *pcFullName)
+{
+    UINT32 ulSize = 0;
+
+    if ( NULL == pcFullName )
+    {
+        return 0;
+    }
+    
+#if VOS_PLAT_LINUX
+    off_t file_size;
+    struct stat stbuf;
+    INT32 iFd = 0;
+      
+    iFd = open(pcFullName, O_RDONLY);
+    if (iFd == -1) 
+    {
+      return 0;
+    }
+      
+    if ((fstat(iFd, &stbuf) != 0) || (!S_ISREG(stbuf.st_mode))) 
+    {
+      close(iFd);
+      return 0;
+    }
+      
+    file_size = stbuf.st_size;
+    ulSize = (UINT32)file_size;
+#endif
+
+    return ulSize;
+}
+
+
+/*****************************************************************************
+ 函 数 名  : VOS_FileRead
+ 功能描述  : 读取文件内容
+ 输入参数  : CHAR *pcFilename  
+             INT32 *pcLen      
+             CHAR **pcData     ---申请出文件的内存，需要外部进行释放，否则内存泄漏
+ 输出参数  : 无
+ 返 回 值  : 
+ 调用函数  : 
+ 被调函数  : 
+ 
+ 修改历史      :
+  1.日    期   : 2018年11月12日
+    作    者   : 蒋康
+    修改内容   : 新生成函数
+
+*****************************************************************************/
+LONG VOS_FileRead(CHAR *pcFilename, INT32 *pcLen, UCHAR **ppucData )
+{
+    int iStep = 16000;
+    int i = 0;
+    int cur_len = 0;
+    int iFile = 0;
+    
+#if VOS_PLAT_LINUX
+    iFile = open(pcFilename, O_RDONLY);
+    if ( iFile == -1 )
+        return VOS_ERR;
+
+    while (VOS_TRUE)
+    {
+        *ppucData = realloc( *ppucData, iStep*(i+1));
+        if ( ppucData == NULL )
+        {
+            close(iFile);
+            return VOS_ERR;
+        }
+
+        cur_len = read( iFile, *ppucData+(iStep*i), iStep);
+        if ( cur_len == 0 )
+            break;
+        else
+            *pcLen += cur_len;
+        i++;
+    }
+
+    close( iFile );
+#endif
+
+    return VOS_OK;
+}
+
+
 
 
 

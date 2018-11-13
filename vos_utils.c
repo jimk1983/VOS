@@ -36,13 +36,13 @@ UINT32 VOS_atoi(CHAR *pcStr)
 }
 
 /*将整形数转换为字符串*/
-UINT32 VOS_itoa(CHAR *pcStr, UINT32 iVal)
+VOID VOS_itoa(CHAR *pcStr, UINT32 iVal)
 {
     CHAR acBuf[VOS_INT32STR_MAXLEN] = {0};
 
     if ( NULL == pcStr )
     {
-        return VOS_ERR;
+        return;
     }
 
     #if VOS_PLAT_LINUX
@@ -53,7 +53,28 @@ UINT32 VOS_itoa(CHAR *pcStr, UINT32 iVal)
 
     memcpy(pcStr, acBuf, strlen(acBuf));
     
-    return VOS_OK;
+    return;
+}
+
+/*将十六数转换为字符串*/
+VOID VOS_hextoa(CHAR *pcStr, CHAR iVal)
+{
+    CHAR acBuf[VOS_INT32STR_MAXLEN] = {0};
+
+    if ( NULL == pcStr )
+    {
+        return;
+    }
+
+    #if VOS_PLAT_LINUX
+    snprintf(acBuf, VOS_INT32STR_MAXLEN-1,"%02x", iVal);
+    #elif VOS_PLAT_WIN
+    sprintf_s(acBuf, VOS_INT32STR_MAXLEN-1,"%02x", iVal);
+    #endif
+
+    memcpy(pcStr, acBuf, strlen(acBuf));
+    
+    return;
 }
 
 

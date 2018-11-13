@@ -32,6 +32,10 @@ struct tagVosDirsFilesInfo{
     INT32   uiFileSize;                                /*文件大小*/
 };
 
+UINT32 VOS_FileGetSize(CHAR *pcFullName);
+
+LONG VOS_FileRead(CHAR *pcFilename, INT32 *pcLen, UCHAR **ppucData);
+
 LONG VOS_DirGetCurrentPath(CHAR *pcDirPath, INT32 iMaxLen);
 
 LONG VOS_DirIsExist(const CHAR *pcDirPath);
@@ -51,7 +55,6 @@ LONG VOS_FileRemove(CHAR *pcFilePath);
 LONG VOS_FileCreate(CHAR *pcFilePath);
 
 LONG VOS_FileIsExist(const CHAR *pcFilePath);
-
 
 LONG VOS_EventfdCreate(LONG lFlags);
 

@@ -58,6 +58,25 @@ typedef struct tagVosMemUnit      VOS_MEMBUF_UNIT_S;
 #define VOS_MEM_TYPE_SYS       16
 
 
+
+#define VOS_MEM_SIZE_32         32
+#define VOS_MEM_SIZE_64         64
+#define VOS_MEM_SIZE_128        128
+#define VOS_MEM_SIZE_256        256
+#define VOS_MEM_SIZE_512        512
+#define VOS_MEM_SIZE_1K         1024
+#define VOS_MEM_SIZE_2K         2048
+#define VOS_MEM_SIZE_4K         4096
+#define VOS_MEM_SIZE_8K         8192    
+#define VOS_MEM_SIZE_16K        16384+256
+#define VOS_MEM_SIZE_32K        32768
+#define VOS_MEM_SIZE_64K        65536
+#define VOS_MEM_SIZE_128K       131072
+#define VOS_MEM_SIZE_256K       262144
+#define VOS_MEM_SIZE_512K       524288
+
+
+
 /*可以分配两个大内存块进行管理*/
 struct tagVOSMemMgmt
 {
@@ -218,21 +237,21 @@ INT32 VOS_MemMgmt_Init()
     VOS_MEMBUF_UNIT_S *pstMmEntry = NULL;
 
     /*小字节数量比较多, 放在第一块内存中*/
-    ulBufSum1  =  VOS_MEM_32_NUM   * (  (32+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum1 += VOS_MEM_64_NUM   * (  (64+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum1 += VOS_MEM_128_NUM * (  (128+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum1 += VOS_MEM_256_NUM * (  (256+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum1 += VOS_MEM_512_NUM * (  (512+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1  =  VOS_MEM_32_NUM   * (  (VOS_MEM_SIZE_32+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1 += VOS_MEM_64_NUM   * (  (VOS_MEM_SIZE_64+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1 += VOS_MEM_128_NUM * (  (VOS_MEM_SIZE_128+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1 += VOS_MEM_256_NUM * (  (VOS_MEM_SIZE_256+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1 += VOS_MEM_512_NUM * (  (VOS_MEM_SIZE_512+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
 
     /*1K以后的放在另外一块*/
-    ulBufSum2 =    VOS_MEM_1K_NUM * (  (1024+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_2K_NUM * (  (2048+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_4K_NUM * (  (4096+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_8K_NUM * (  (8192+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_16K_NUM * ( (16384+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_32K_NUM * ( (32768+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_64K_NUM * ( (65536+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_128K_NUM *( (131072+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 =    VOS_MEM_1K_NUM * (  (VOS_MEM_SIZE_1K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_2K_NUM * (  (VOS_MEM_SIZE_2K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_4K_NUM * (  (VOS_MEM_SIZE_4K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_8K_NUM * (  (VOS_MEM_SIZE_8K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_16K_NUM * ( (VOS_MEM_SIZE_16K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_32K_NUM * ( (VOS_MEM_SIZE_32K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_64K_NUM * ( (VOS_MEM_SIZE_64K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_128K_NUM *( (VOS_MEM_SIZE_128K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
 
     
     /*多线程内存锁初始化*/

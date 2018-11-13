@@ -151,7 +151,7 @@ VOID VOS_Printf(CHAR *pcformat,...)
 }
 
 /*Æ´½Ó×Ö·û´®*/
-INT32 VOS_Snprintf(CHAR *pcBuf, UINT32 ulMaxLen, CHAR *pcFormat,...)
+INT32 VOS_Snprintf(UCHAR *pcBuf, UINT32 ulMaxLen, CHAR *pcFormat,...)
 {
     va_list args_ptr;
     INT32 ulRet = 0;    
@@ -169,11 +169,11 @@ INT32 VOS_Snprintf(CHAR *pcBuf, UINT32 ulMaxLen, CHAR *pcFormat,...)
     va_start(args_ptr, pcFormat);
     
     #if VOS_PLAT_WIN 
-    ulRet = vsprintf_s(pcBuf, ulMaxLen-1,pcFormat,args_ptr);
+    ulRet = vsprintf_s((CHAR *)pcBuf, ulMaxLen-1,pcFormat,args_ptr);
     #elif VOS_PLAT_LINUX
-    ulRet = vsnprintf(pcBuf, ulMaxLen-1,pcFormat,args_ptr);
+    ulRet = vsnprintf((CHAR *)pcBuf, ulMaxLen-1,pcFormat,args_ptr);
     #elif VOS_PLAT_MAC
-    ulRet = vsnprintf(pcBuf, ulMaxLen-1,pcFormat,args_ptr);
+    ulRet = vsnprintf((CHAR *)pcBuf, ulMaxLen-1,pcFormat,args_ptr);
     #endif
     va_end(args_ptr);
    

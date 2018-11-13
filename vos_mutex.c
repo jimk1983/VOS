@@ -57,7 +57,7 @@ INT32 VOS_ThreadMutex_Init(VOS_RW_LOCK_S *pstMutex)
  *  函数: VOS_MmThreadMutex_Lock
  *  说明: 线程加锁
  *  *****************************************************************************/
-INT32 VOS_ThreadMutex_Lock(VOS_RW_LOCK_S *pstMutex)
+INT32 VOS_ThreadMutex_RWLock(VOS_RW_LOCK_S *pstMutex)
 {
 #if VOS_PLAT_WIN
         CRITICAL_SECTION *pstMutexLock = NULL;
@@ -71,6 +71,62 @@ INT32 VOS_ThreadMutex_Lock(VOS_RW_LOCK_S *pstMutex)
         pstMutexLock = &pstMutex->stMutex;
     
         (VOID)pthread_mutex_lock(pstMutexLock);
+        
+#elif VOS_PLAT_MAC
+    
+#endif
+    
+    pstMutex->uiStatus  = 1;
+
+    return VOS_OK;
+}
+
+/*****************************************************************************
+ *  函数: VOS_ThreadMutex_UnLock
+ *  说明: 线程解锁
+ *  *****************************************************************************/
+INT32 VOS_ThreadMutex_RWUnLock(VOS_RW_LOCK_S *pstMutex)
+{
+#if VOS_PLAT_WIN
+            CRITICAL_SECTION *pstMutexLock = NULL;
+
+            pstMutexLock = &pstMutex->stMutex;
+            
+            (VOID)LeaveCriticalSection(pstMutexLock);
+#elif VOS_PLAT_LINUX
+            pthread_mutex_t *pstMutexLock = NULL;
+
+            pstMutexLock = &pstMutex->stMutex;
+            
+            (VOID)pthread_mutex_unlock(pstMutexLock);
+#elif VOS_PLAT_MAC
+        
+#endif
+    
+    pstMutex->uiStatus  = 0;
+
+    return VOS_OK;
+}
+
+/*****************************************************************************
+ *  函数: VOS_MmThreadMutex_Lock
+ *  说明: 线程加锁
+ *  *****************************************************************************/
+INT32 VOS_ThreadMutex_RLock(VOS_RW_LOCK_S *pstMutex)
+{
+#if VOS_PLAT_WIN
+        CRITICAL_SECTION *pstMutexLock = NULL;
+
+        pstMutexLock = &pstMutex->stMutex;
+        
+        (VOID)EnterCriticalSection(pstMutexLock);
+#elif VOS_PLAT_LINUX
+        pthread_mutex_t *pstMutexLock = NULL;
+
+        pstMutexLock = &pstMutex->stMutex;
+    
+        (VOID)pthread_mutex_lock(pstMutexLock);
+     
 #elif VOS_PLAT_MAC
     
 #endif
@@ -82,7 +138,7 @@ INT32 VOS_ThreadMutex_Lock(VOS_RW_LOCK_S *pstMutex)
  *  函数: VOS_ThreadMutex_UnLock
  *  说明: 线程解锁
  *  *****************************************************************************/
-INT32 VOS_ThreadMutex_UnLock(VOS_RW_LOCK_S *pstMutex)
+INT32 VOS_ThreadMutex_RUnLock(VOS_RW_LOCK_S *pstMutex)
 {
 #if VOS_PLAT_WIN
             CRITICAL_SECTION *pstMutexLock = NULL;
@@ -102,6 +158,7 @@ INT32 VOS_ThreadMutex_UnLock(VOS_RW_LOCK_S *pstMutex)
 
     return VOS_OK;
 }
+
 
 /*****************************************************************************
  *  函数: VOS_ThreadMutex_UnLock
@@ -292,9 +349,9 @@ INT32 VOS_SM_Destroy(VOS_SM_T *pstSem)
 
 LONG VOS_InterlockedIncrement(ULONG *pulNums)
 {
-	
 #if VOS_PLAT_LINUX
-	*pulNums =*pulNums + 1;
+	//*pulNums =*pulNums + 1;
+    atomic_inc(pulNums);
 #elif VOS_PLAT_WIN
 	InterLockedIncrement(pulNums);
 #endif
@@ -307,7 +364,8 @@ LONG VOS_InterlockedDecrement(ULONG *pulNums)
 {
 	
 #if VOS_PLAT_LINUX
-	*pulNums =*pulNums - 1;
+	//*pulNums =*pulNums - 1;
+	atomic_dec(pulNums);
 #elif VOS_PLAT_WIN
 	InterlockedDecrement(pulNums);
 #endif

@@ -940,7 +940,7 @@ CHAR *VOS_mtoa (const UCHAR *pucMacAddr)
     
     VOS_Mem_Zero(pcBuffer, sizeof (pcBuffer));
     
-    VOS_Snprintf (pcBuffer, 18, "%02X:%02X:%02X:%02X:%02X:%02X",
+    VOS_Snprintf ((UCHAR *)pcBuffer, 18, "%02X:%02X:%02X:%02X:%02X:%02X",
               pucMacAddr[0],pucMacAddr[1],pucMacAddr[2],pucMacAddr[3],pucMacAddr[4],pucMacAddr[5]);
     
     return pcBuffer;
