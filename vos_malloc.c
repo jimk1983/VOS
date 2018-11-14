@@ -74,7 +74,7 @@ VOID VOS_Mem_Copy(CHAR *pcDst, CHAR *pcSrc,ULONG ulSize)
     return;
 }
 
-VOID VOS_Mem_Copy_S(CHAR *pcDst, ULONG ulMaxLen, CHAR *pcSrc,ULONG ulSize)
+VOID VOS_Mem_Copy_S(VOID *pcDst, ULONG ulMaxLen, VOID *pcSrc,ULONG ulSize)
 {
     if ( (NULL == pcDst) || (NULL == pcSrc) || (0 == ulSize) )
     {

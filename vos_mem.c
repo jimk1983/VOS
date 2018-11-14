@@ -39,15 +39,15 @@ typedef struct tagVosMemUnit      VOS_MEMBUF_UNIT_S;
 #define VOS_MGMT_MAGIC_HEAD1        0xAACCBBDD
 #define VOS_MGMT_MAGIC_HEAD2        0xEEBBFFAA
 
-#define VOS_MEM_TYPE_32          1
-#define VOS_MEM_TYPE_64          2
-#define VOS_MEM_TYPE_128        3
-#define VOS_MEM_TYPE_256        4
-#define VOS_MEM_TYPE_512        5
-#define VOS_MEM_TYPE_1K         6
-#define VOS_MEM_TYPE_2K         7
-#define VOS_MEM_TYPE_4K         8
-#define VOS_MEM_TYPE_8K         9
+#define VOS_MEM_TYPE_32        1
+#define VOS_MEM_TYPE_64        2
+#define VOS_MEM_TYPE_128       3
+#define VOS_MEM_TYPE_256       4
+#define VOS_MEM_TYPE_512       5
+#define VOS_MEM_TYPE_1K        6
+#define VOS_MEM_TYPE_2K        7
+#define VOS_MEM_TYPE_4K        8
+#define VOS_MEM_TYPE_8K        9
 #define VOS_MEM_TYPE_16K       10
 #define VOS_MEM_TYPE_32K       11
 #define VOS_MEM_TYPE_64K       12
@@ -56,7 +56,6 @@ typedef struct tagVosMemUnit      VOS_MEMBUF_UNIT_S;
 #define VOS_MEM_TYPE_512K      15
 
 #define VOS_MEM_TYPE_SYS       16
-
 
 
 #define VOS_MEM_SIZE_32         32
@@ -230,28 +229,28 @@ INT32 VOS_MemMgmt_Init()
      主要可能是一次性申请大块内存可能会失败*/
     UINT32 ulBufSum1    = 0;
     UINT32 ulBufSum2    = 0;
-    CHAR   *pcMmOffset = NULL;
+    CHAR   *pcMmOffset  = NULL;
     UINT32 ulIndex        = 0;
-    UINT32 ulSizeChar    = VOS_CHAR_SIZE;
+    UINT32 ulSizeChar     = VOS_CHAR_SIZE;
     //CHAR   *pcTmpOff    = NULL;
     VOS_MEMBUF_UNIT_S *pstMmEntry = NULL;
 
     /*小字节数量比较多, 放在第一块内存中*/
-    ulBufSum1  =  VOS_MEM_32_NUM   * (  (VOS_MEM_SIZE_32+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum1 += VOS_MEM_64_NUM   * (  (VOS_MEM_SIZE_64+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum1 += VOS_MEM_128_NUM * (  (VOS_MEM_SIZE_128+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum1 += VOS_MEM_256_NUM * (  (VOS_MEM_SIZE_256+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum1 += VOS_MEM_512_NUM * (  (VOS_MEM_SIZE_512+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1  = VOS_MEM_32_NUM  * ( (VOS_MEM_SIZE_32+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1 += VOS_MEM_64_NUM  * ( (VOS_MEM_SIZE_64+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1 += VOS_MEM_128_NUM * ( (VOS_MEM_SIZE_128+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1 += VOS_MEM_256_NUM * ( (VOS_MEM_SIZE_256+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum1 += VOS_MEM_512_NUM * ( (VOS_MEM_SIZE_512+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
 
     /*1K以后的放在另外一块*/
-    ulBufSum2 =    VOS_MEM_1K_NUM * (  (VOS_MEM_SIZE_1K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_2K_NUM * (  (VOS_MEM_SIZE_2K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_4K_NUM * (  (VOS_MEM_SIZE_4K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_8K_NUM * (  (VOS_MEM_SIZE_8K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 =   VOS_MEM_1K_NUM  * ( (VOS_MEM_SIZE_1K+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_2K_NUM  * ( (VOS_MEM_SIZE_2K+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_4K_NUM  * ( (VOS_MEM_SIZE_4K+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_8K_NUM  * ( (VOS_MEM_SIZE_8K+1)  * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
     ulBufSum2 +=  VOS_MEM_16K_NUM * ( (VOS_MEM_SIZE_16K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
     ulBufSum2 +=  VOS_MEM_32K_NUM * ( (VOS_MEM_SIZE_32K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
     ulBufSum2 +=  VOS_MEM_64K_NUM * ( (VOS_MEM_SIZE_64K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
-    ulBufSum2 +=  VOS_MEM_128K_NUM *( (VOS_MEM_SIZE_128K+1) * VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
+    ulBufSum2 +=  VOS_MEM_128K_NUM* ( (VOS_MEM_SIZE_128K+1)* VOS_CHAR_SIZE + VOS_MEM_UNIT_SIZE);
 
     
     /*多线程内存锁初始化*/
@@ -378,7 +377,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_32++;
         /*切换到下一片的内存, 偏移大小是32字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 32 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_32 + ulSizeChar;
     }
 
 
@@ -408,7 +407,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_64++;
         /*切换到下一片的内存, 偏移大小是32字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 64 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_64 + ulSizeChar;
     }
 
     
@@ -438,7 +437,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_128++;
         /*切换到下一片的内存, 偏移大小是32字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 128 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_128 + ulSizeChar;
     }
 
     /*256字节*/
@@ -467,7 +466,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_256++;
         /*切换到下一片的内存, 偏移大小是32字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 256 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_256 + ulSizeChar;
     }
 
     /*512字节*/
@@ -496,7 +495,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_512++;
         /*切换到下一片的内存, 偏移大小是32字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 512 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_512 + ulSizeChar;
     }
 
 
@@ -509,12 +508,12 @@ INT32 VOS_MemMgmt_Init()
         pstMmEntry = (VOS_MEMBUF_UNIT_S *)pcMmOffset;
 
         /*将该内存进行赋值*/
-        pstMmEntry->ulMagicHead1 = VOS_MGMT_MAGIC_HEAD1;
-        pstMmEntry->ulMagicHead2 = VOS_MGMT_MAGIC_HEAD2;
+        pstMmEntry->ulMagicHead1 =  VOS_MGMT_MAGIC_HEAD1;
+        pstMmEntry->ulMagicHead2 =  VOS_MGMT_MAGIC_HEAD2;
         VOS_Node_Init(&pstMmEntry->stNode);
-        pstMmEntry->ulLineNum =  0;
-        pstMmEntry->ulBufType  =  VOS_MEM_TYPE_1K;
-        pstMmEntry->ulIdle        =  VOS_MEM_FREED;
+        pstMmEntry->ulLineNum    =  0;
+        pstMmEntry->ulBufType    =  VOS_MEM_TYPE_1K;
+        pstMmEntry->ulIdle       =  VOS_MEM_FREED;
 
         /*最后一个是内存的使用地址，
            从初始地址偏移即可*/
@@ -528,7 +527,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_1K++;
         /*切换到下一片的内存, 偏移大小是1024字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 1024 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_1K + ulSizeChar;
     }
 
 
@@ -558,7 +557,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_2K++;
         /*切换到下一片的内存, 偏移大小是2048字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 2048 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_2K + ulSizeChar;
     }
 
     
@@ -588,7 +587,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_4K++;
         /*切换到下一片的内存, 偏移大小是32字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 4096 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_4K + ulSizeChar;
     }
 
     /*8192字节*/
@@ -617,7 +616,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_8K++;
         /*切换到下一片的内存, 偏移大小是32字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 8192 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_8K + ulSizeChar;
     }
 
     /*16384字节*/
@@ -646,7 +645,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_16K++;
         /*切换到下一片的内存, 偏移大小是16384字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 16384 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_16K + ulSizeChar;
     }
 
     /*32768字节*/
@@ -675,7 +674,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_32K++;
         /*切换到下一片的内存, 偏移大小是32768字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 32768 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_32K + ulSizeChar;
     }
 
     /*65536字节*/
@@ -704,7 +703,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_64K++;
         /*切换到下一片的内存, 偏移大小是32768字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 65536 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_64K + ulSizeChar;
     }
 
     /*131072字节*/
@@ -733,7 +732,7 @@ INT32 VOS_MemMgmt_Init()
         g_stmmMgmt.ulFNum_128K++;
         /*切换到下一片的内存, 偏移大小是32768字节+ 1结束位
            防止拷贝越界*/
-        pcMmOffset += VOS_MEM_UNIT_SIZE + 131072 + ulSizeChar;
+        pcMmOffset += VOS_MEM_UNIT_SIZE + VOS_MEM_SIZE_128K + ulSizeChar;
     }
     
     return VOS_OK;
@@ -788,8 +787,8 @@ VOID VOS_MemMgmt_UnInit()
  函 数 名  : VOS_MemCreate_X
  功能描述  : 申请内存，记录了该内存的相关文件和行号信息
  输入参数  :   ULONG ulMid       ---模块信息
-                            ULONG ulBufSize       --申请内存大小         
-                            CHAR *pcFileName   ---申请内存的文件名称
+                            ULONG ulBufSize     ---申请内存大小         
+                            CHAR *pcFileName    ---申请内存的文件名称
                             ULONG ulLine        ---申请内存的行号
  输出参数  : 无
  返 回 值  : CHAR
@@ -810,7 +809,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
     VOS_DLIST_NODE_S   *pstNode = NULL;
     
     /*支持多线程内存分配，需要添加线程锁*/
-    if ( ulBufSize <= 32 )
+    if ( ulBufSize <= VOS_MEM_SIZE_32 )
     {
         VOS_RWLOCK_LOCK(g_stmmLock32);
          /*首先需要看是不是空的，从不为空的获取
@@ -842,7 +841,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock32);
     }
-    else if ( ( ulBufSize > 32 ) && ( ulBufSize <= 64 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_32 ) && ( ulBufSize <= VOS_MEM_SIZE_64 ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock64);
         
@@ -871,7 +870,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock64);
     }
-    else if ( ( ulBufSize > 64 ) && ( ulBufSize <= 128 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_64 ) && ( ulBufSize <= VOS_MEM_SIZE_128 ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock128);
         
@@ -900,7 +899,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock128);
     }
-    else if ( ( ulBufSize > 128 ) && ( ulBufSize <= 256 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_128 ) && ( ulBufSize <= VOS_MEM_SIZE_256 ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock256);
         
@@ -929,7 +928,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock256);
     }
-    else if ( ( ulBufSize > 256 ) && ( ulBufSize <= 512 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_256 ) && ( ulBufSize <= VOS_MEM_SIZE_512 ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock512);
         
@@ -958,7 +957,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock512);
     }
-    else if ( ( ulBufSize > 512 ) && ( ulBufSize <= 1024 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_512 ) && ( ulBufSize <= VOS_MEM_SIZE_1K ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock1K);
         
@@ -987,7 +986,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock1K);
     }
-    else if ( ( ulBufSize > 1024 ) && ( ulBufSize <= 2048 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_1K ) && ( ulBufSize <= VOS_MEM_SIZE_2K ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock2K);
         
@@ -1016,7 +1015,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock2K);
     }
-    else if ( ( ulBufSize > 2048 ) && ( ulBufSize <= 4096 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_2K ) && ( ulBufSize <= VOS_MEM_SIZE_4K ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock4K);
         
@@ -1045,7 +1044,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock4K);
     }
-    else if ( ( ulBufSize > 4096 ) && ( ulBufSize <= 8192 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_4K ) && ( ulBufSize <= VOS_MEM_SIZE_8K ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock8K);
         
@@ -1074,7 +1073,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock8K);
     }
-    else if ( ( ulBufSize > 8192 ) && ( ulBufSize <= 16384 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_8K ) && ( ulBufSize <= VOS_MEM_SIZE_16K ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock16K);
         
@@ -1103,7 +1102,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock16K);
     }
-    else if ( ( ulBufSize > 16384 ) && ( ulBufSize <= 32768 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_16K ) && ( ulBufSize <= VOS_MEM_SIZE_32K ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock32K);
         
@@ -1132,7 +1131,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock32K);
     }
-    else if ( ( ulBufSize > 32768 ) && ( ulBufSize <= 65536 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_32K ) && ( ulBufSize <= VOS_MEM_SIZE_64K ) )
     {
        VOS_RWLOCK_LOCK(g_stmmLock64K);
        
@@ -1161,7 +1160,7 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
        }
        VOS_RWLOCK_UNLOCK(g_stmmLock64K);
     }
-    else if ( ( ulBufSize > 65536 ) && ( ulBufSize <= 131072 ) )
+    else if ( ( ulBufSize > VOS_MEM_SIZE_64K ) && ( ulBufSize <= VOS_MEM_SIZE_128K ) )
     {
        VOS_RWLOCK_LOCK(g_stmmLock128K);
        

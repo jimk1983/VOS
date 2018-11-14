@@ -596,8 +596,8 @@ UINT32 VOS_FileGetSize(CHAR *pcFullName)
 /*****************************************************************************
  函 数 名  : VOS_FileRead
  功能描述  : 读取文件内容
- 输入参数  : CHAR *pcFilename  
-             INT32 *pcLen      
+ 输入参数  : CHAR *pcFilename      ---文件名
+             INT32 *pcLen      ---文件长度大小
              CHAR **pcData     ---申请出文件的内存，需要外部进行释放，否则内存泄漏
  输出参数  : 无
  返 回 值  : 
