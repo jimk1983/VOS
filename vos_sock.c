@@ -76,6 +76,7 @@ LONG VOS_SOCK_Send(LONG lSockfd, CHAR *pcBuf, ULONG ulBufLen, LONG *plErrorStatu
     lRet = send(lSockfd, pcBuf, ulBufLen, 0);
     if( lRet < 0 )
     {
+        printf("VOS_SOCK_Send, send errno=%d\n", errno);
         if(errno == EAGAIN || errno == EWOULDBLOCK )
         {
             (*plErrorStatus) = VOS_SOCK_EWOULDBLOCK;
@@ -712,12 +713,9 @@ LONG VOS_SOCK_SetOption(LONG lSockfd)
 {
   LONG lRet =0;
   LONG lnonBlockflag = 1;
-
-  //LONG lOn = 1;
-
   LONG lSndBufsize = VOS_SOCK_SNDWINSIZE;
   LONG lRcvBufsize = VOS_SOCK_RCVWINSIZE;
-
+  INT32 lOn = 1;
   struct linger so_linger = {0};
 
   /*不允许字节逗留,直接关闭*/
@@ -753,6 +751,12 @@ LONG VOS_SOCK_SetOption(LONG lSockfd)
   if ( 0 != lRet )
   {
         return VOS_ERR;
+  }
+  
+  lRet = setsockopt(lSockfd, SOL_SOCKET, SO_REUSEADDR,(void*)&lOn, sizeof(lOn));
+  if ( 0 != lRet )
+  {
+      return VOS_ERR;
   }
 #if 0
     /*关闭接收到send多次，(SO_NOSIGPIPE-IOS/MacOS)linux会受到sigPipe, 忽略
