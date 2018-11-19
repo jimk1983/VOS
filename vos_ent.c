@@ -27,6 +27,13 @@ LONG VOS_EnvInit()
         VOS_Printf("vos Memory Mgmt init error!");
         return VOS_ERR;
     }
+
+    if ( VOS_ERR == VOS_SOCK_Init() )
+    {
+        VOS_Printf("vos socket init error!");
+        return VOS_ERR;
+    }
+        
     return VOS_OK;
 }
 
@@ -34,5 +41,6 @@ LONG VOS_EnvInit()
 VOID VOS_EnvUnInit()
 {
     VOS_MemMgmt_UnInit();
+    VOS_SOCK_UnInit();
 }
 

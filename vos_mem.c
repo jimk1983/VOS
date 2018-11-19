@@ -801,7 +801,7 @@ VOID VOS_MemMgmt_UnInit()
     修改内容   : 新生成函数
 
 *****************************************************************************/
-CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLine)
+CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLine)
 {   
     ULONG ulSysBufSize       = 0;
     CHAR *pcMemBuf          = NULL;
@@ -840,6 +840,39 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
             }
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock32);
+    }
+    else if ( ( ulBufSize > VOS_MEM_SIZE_8K ) && ( ulBufSize <= VOS_MEM_SIZE_16K ) )
+    {
+        VOS_RWLOCK_LOCK(g_stmmLock16K);
+        
+        if ( g_stmmMgmt.ulFNum_16K >0 )
+        {
+            VOS_Node_HeadGet(&g_stmmMgmt.stMMListF_16K,&pstNode);
+            if ( NULL != pstNode )
+            {
+                pstMem = VOS_MEM_UNIT_ENTRY(pstNode,VOS_MEMBUF_UNIT_S, stNode);
+                if ( NULL == pstMem )
+                {
+                    VOS_RWLOCK_UNLOCK(g_stmmLock16K);
+                    return NULL;
+                }
+                
+                VOS_Mem_Copy_S(pstMem->acFileName,VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+                pstMem->ulLineNum =  ulLine;
+                pstMem->ulIdle        =  VOS_MEM_USED;
+                pstMem->ulMid        =  ulMid;
+                pcMemBuf                =  pstMem->ucmmbuf;
+                
+                g_stmmMgmt.ulFNum_16K--;
+                VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_16K, &(pstMem->stNode));
+                g_stmmMgmt.ulUNum_16K++;
+            }                
+        }
+        
+        printf("======>VOS_MemCreate_X 16K_buf status usednum=%d, freenum=%d\n",
+           g_stmmMgmt.ulUNum_16K, g_stmmMgmt.ulFNum_16K);
+        
+        VOS_RWLOCK_UNLOCK(g_stmmLock16K);
     }
     else if ( ( ulBufSize > VOS_MEM_SIZE_32 ) && ( ulBufSize <= VOS_MEM_SIZE_64 ) )
     {
@@ -1073,35 +1106,6 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, ULONG ulBufSize, CHAR *pcFileName, ULONG ulLi
         }
         VOS_RWLOCK_UNLOCK(g_stmmLock8K);
     }
-    else if ( ( ulBufSize > VOS_MEM_SIZE_8K ) && ( ulBufSize <= VOS_MEM_SIZE_16K ) )
-    {
-        VOS_RWLOCK_LOCK(g_stmmLock16K);
-        
-        if ( g_stmmMgmt.ulFNum_16K >0 )
-        {
-            VOS_Node_HeadGet(&g_stmmMgmt.stMMListF_16K,&pstNode);
-            if ( NULL != pstNode )
-            {
-                pstMem = VOS_MEM_UNIT_ENTRY(pstNode,VOS_MEMBUF_UNIT_S, stNode);
-                if ( NULL == pstMem )
-                {
-                    VOS_RWLOCK_UNLOCK(g_stmmLock16K);
-                    return NULL;
-                }
-                
-                VOS_Mem_Copy_S(pstMem->acFileName,VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
-                pstMem->ulLineNum =  ulLine;
-                pstMem->ulIdle        =  VOS_MEM_USED;
-                pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
-                
-                g_stmmMgmt.ulFNum_16K--;
-                VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_16K, &(pstMem->stNode));
-                g_stmmMgmt.ulUNum_16K++;
-            }                
-        }
-        VOS_RWLOCK_UNLOCK(g_stmmLock16K);
-    }
     else if ( ( ulBufSize > VOS_MEM_SIZE_16K ) && ( ulBufSize <= VOS_MEM_SIZE_32K ) )
     {
         VOS_RWLOCK_LOCK(g_stmmLock32K);
@@ -1242,6 +1246,17 @@ VOID VOS_MemFree_X(CHAR *pcMemBuf)
         g_stmmMgmt.ulFNum_32++;
         VOS_RWLOCK_UNLOCK(g_stmmLock32);
     }
+    else if ( VOS_MEM_TYPE_16K == pstMem->ulBufType )   /*性能优化*/
+    {
+        VOS_RWLOCK_LOCK(g_stmmLock16K);        
+        VOS_Node_Remove(&pstMem->stNode);        
+        g_stmmMgmt.ulUNum_16K--;
+        VOS_Node_TailAdd(&g_stmmMgmt.stMMListF_16K, &(pstMem->stNode));        
+        g_stmmMgmt.ulFNum_16K++;
+        VOS_RWLOCK_UNLOCK(g_stmmLock16K);
+        printf("<======VOS_MemFree_X 16K_buf status usednum=%d, freenum=%d\n",
+           g_stmmMgmt.ulUNum_16K, g_stmmMgmt.ulFNum_16K);
+    }
     else if ( VOS_MEM_TYPE_64 == pstMem->ulBufType )
     {
         VOS_RWLOCK_LOCK(g_stmmLock64);
@@ -1315,15 +1330,6 @@ VOID VOS_MemFree_X(CHAR *pcMemBuf)
         g_stmmMgmt.ulFNum_8K++;            
         VOS_RWLOCK_UNLOCK(g_stmmLock8K);
     }
-    else if ( VOS_MEM_TYPE_16K == pstMem->ulBufType )
-    {
-        VOS_RWLOCK_LOCK(g_stmmLock16K);        
-        VOS_Node_Remove(&pstMem->stNode);        
-        g_stmmMgmt.ulUNum_16K--;
-        VOS_Node_TailAdd(&g_stmmMgmt.stMMListF_16K, &(pstMem->stNode));        
-        g_stmmMgmt.ulFNum_16K++;
-        VOS_RWLOCK_UNLOCK(g_stmmLock16K);
-    }
     else if ( VOS_MEM_TYPE_32K == pstMem->ulBufType )
     {
         VOS_RWLOCK_LOCK(g_stmmLock32K);        
@@ -1357,6 +1363,7 @@ VOID VOS_MemFree_X(CHAR *pcMemBuf)
                 pstMem->acFileName, pstMem->ulLineNum, pstMem);
         free(pstMem);
     }
+    
     return;
 }
 

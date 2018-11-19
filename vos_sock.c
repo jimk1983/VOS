@@ -33,6 +33,11 @@
 #include <vos_pub.h>
 
 
+VOID VOS_SOCK_SignalHandle(INT32 signleNo)     
+{     
+    //do   something;     
+}
+
 LONG VOS_SOCK_Init()
 {
 #if VOS_PLAT_WIN
@@ -49,7 +54,35 @@ LONG VOS_SOCK_Init()
         return VOS_ERR;
     }
     
-#endif    
+#elif VOS_PLAT_LINUX
+#if 0
+    /*捕捉异常SIGPIPE信号，不结束进程*/
+    struct sigaction sa;
+    sa.sa_handler = SIG_IGN;
+    sa.sa_flags = 0;
+    
+    if ( sigemptyset(&sa.sa_mask) == -1         //初始化信号集为空
+        || sigaction(SIGPIPE, &sa, 0) == -1)    //屏蔽SIGPIPE信号
+    {   
+        printf("failed to ignore SIGPIPE; sigaction\n");
+        return VOS_ERR;
+    }
+#elif 1
+//线程级的设置
+    sigset_t signal_mask;
+    sigemptyset (&signal_mask);
+    sigaddset (&signal_mask, SIGPIPE);
+    int rc = pthread_sigmask (SIG_BLOCK, &signal_mask, NULL);
+    if (rc != 0) {
+        printf("block sigpipe error\n");
+} 
+#else
+
+//自定义
+signal(SIGPIPE, signal_handle);  
+ 
+#endif
+#endif
     
     return VOS_OK;
 }
@@ -251,7 +284,7 @@ LONG VOS_SOCK_Recv(LONG lSockfd, CHAR *pcBuf, ULONG ulBufLen, LONG *plErrorStatu
             return VOS_ERR;
         }
     }
-    else if ( lRet == 0)
+    else if ( 0 == lRet )
     {
         (*plErrorStatus) = VOS_SOCK_FINISH;
         
@@ -715,7 +748,6 @@ LONG VOS_SOCK_SetOption(LONG lSockfd)
   LONG lnonBlockflag = 1;
   LONG lSndBufsize = VOS_SOCK_SNDWINSIZE;
   LONG lRcvBufsize = VOS_SOCK_RCVWINSIZE;
-  INT32 lOn = 1;
   struct linger so_linger = {0};
 
   /*不允许字节逗留,直接关闭*/
@@ -752,12 +784,15 @@ LONG VOS_SOCK_SetOption(LONG lSockfd)
   {
         return VOS_ERR;
   }
-  
+
+#if 0
+  INT32 lOn = 1;
   lRet = setsockopt(lSockfd, SOL_SOCKET, SO_REUSEADDR,(void*)&lOn, sizeof(lOn));
   if ( 0 != lRet )
   {
       return VOS_ERR;
   }
+#endif
 #if 0
     /*关闭接收到send多次，(SO_NOSIGPIPE-IOS/MacOS)linux会受到sigPipe, 忽略
     linux: signal(SIGPIPE, SIG_IGN) */
