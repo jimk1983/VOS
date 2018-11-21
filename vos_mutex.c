@@ -48,7 +48,7 @@ INT32 VOS_ThreadMutex_Init(VOS_RW_LOCK_S *pstMutex)
 
 
 #endif
-
+    __xchg_op(0, &pstMutex->uiLockFlag);
 
     return VOS_OK;
 }
@@ -69,15 +69,14 @@ INT32 VOS_ThreadMutex_RWLock(VOS_RW_LOCK_S *pstMutex)
         pthread_mutex_t *pstMutexLock = NULL;
 
         pstMutexLock = &pstMutex->stMutex;
-    
-        (VOID)pthread_mutex_lock(pstMutexLock);
         
+        __xchg_op(1, &pstMutex->uiLockFlag);
+        
+        (VOID)pthread_mutex_lock(pstMutexLock);
 #elif VOS_PLAT_MAC
     
 #endif
     
-    pstMutex->uiStatus  = 1;
-
     return VOS_OK;
 }
 
@@ -99,17 +98,20 @@ INT32 VOS_ThreadMutex_RWUnLock(VOS_RW_LOCK_S *pstMutex)
             pstMutexLock = &pstMutex->stMutex;
             
             (VOID)pthread_mutex_unlock(pstMutexLock);
+            
 #elif VOS_PLAT_MAC
         
 #endif
-    
-    pstMutex->uiStatus  = 0;
+            
+    __xchg_op(0, &pstMutex->uiLockFlag);
+
 
     return VOS_OK;
 }
 
+
 /*****************************************************************************
- *  函数: VOS_MmThreadMutex_Lock
+ *  函数: VOS_ThreadMutex_RLock
  *  说明: 线程加锁
  *  *****************************************************************************/
 INT32 VOS_ThreadMutex_RLock(VOS_RW_LOCK_S *pstMutex)
@@ -118,6 +120,11 @@ INT32 VOS_ThreadMutex_RLock(VOS_RW_LOCK_S *pstMutex)
         CRITICAL_SECTION *pstMutexLock = NULL;
 
         pstMutexLock = &pstMutex->stMutex;
+
+        if ( 0 == pstMutex->uiLockFlag )
+        {
+            return VOS_OK;
+        }
         
         (VOID)EnterCriticalSection(pstMutexLock);
 #elif VOS_PLAT_LINUX
@@ -125,8 +132,10 @@ INT32 VOS_ThreadMutex_RLock(VOS_RW_LOCK_S *pstMutex)
 
         pstMutexLock = &pstMutex->stMutex;
     
+        __xchg_op(1, &pstMutex->uiLockFlag);
+        
         (VOID)pthread_mutex_lock(pstMutexLock);
-     
+        
 #elif VOS_PLAT_MAC
     
 #endif
@@ -155,7 +164,8 @@ INT32 VOS_ThreadMutex_RUnLock(VOS_RW_LOCK_S *pstMutex)
 #elif VOS_PLAT_MAC
         
 #endif
-
+            
+    __xchg_op(0, &pstMutex->uiLockFlag);
     return VOS_OK;
 }
 
@@ -373,7 +383,21 @@ LONG VOS_InterlockedDecrement(ULONG *pulNums)
 	return VOS_OK;
 }
 
+#if VOS_PLAT_LINUX
+/* 不阻塞的锁，无法上锁直接返回 */
+#if 0
+inline int spin_trylock(spinlock_t *lock)
+{
+    char oldval;
+    __asm__ __volatile__(
+    "xchgb %b0,%1"
+    :"=q" (oldval), "=m" (lock->slock)
+    :"0" (0) : "memory");
+    return oldval > 0;
+}
+#endif
 
+#endif
 
 
 
