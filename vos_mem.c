@@ -801,10 +801,10 @@ VOID VOS_MemMgmt_UnInit()
     修改内容   : 新生成函数
 
 *****************************************************************************/
-CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLine)
+VOID *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, const CHAR *pcFileName, INT32 ulLine)
 {   
     ULONG ulSysBufSize       = 0;
-    CHAR *pcMemBuf          = NULL;
+    VOID *pcMemBuf          = NULL;
     VOS_MEMBUF_UNIT_S *pstMem = NULL;
     VOS_DLIST_NODE_S   *pstNode = NULL;
     
@@ -828,11 +828,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_32--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_32, &(pstMem->stNode));
@@ -857,20 +857,17 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy_S(pstMem->acFileName,VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_16K--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_16K, &(pstMem->stNode));
                 g_stmmMgmt.ulUNum_16K++;
             }                
         }
-        
-        printf("======>VOS_MemCreate_X 16K_buf status usednum=%d, freenum=%d\n",
-           g_stmmMgmt.ulUNum_16K, g_stmmMgmt.ulFNum_16K);
         
         VOS_RWLOCK_UNLOCK(g_stmmLock16K);
     }
@@ -890,11 +887,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy(pstMem->acFileName, pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_64--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_64, &(pstMem->stNode));
@@ -919,11 +916,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy(pstMem->acFileName, pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_128--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_128, &(pstMem->stNode));
@@ -948,11 +945,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN,pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_256--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_256, &(pstMem->stNode));
@@ -977,11 +974,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_512--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_512, &(pstMem->stNode));
@@ -1006,11 +1003,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_1K--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_1K, &(pstMem->stNode));
@@ -1035,11 +1032,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_2K--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_2K, &(pstMem->stNode));
@@ -1064,11 +1061,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy_S(pstMem->acFileName,VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_4K--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_4K, &(pstMem->stNode));
@@ -1093,11 +1090,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_8K--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_8K, &(pstMem->stNode));
@@ -1122,11 +1119,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                     return NULL;
                 }
                 
-                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN,pcFileName, VOS_StrLen(pcFileName));
+                VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                 pstMem->ulLineNum =  ulLine;
                 pstMem->ulIdle        =  VOS_MEM_USED;
                 pstMem->ulMid        =  ulMid;
-                pcMemBuf                =  pstMem->ucmmbuf;
+                pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                 
                 g_stmmMgmt.ulFNum_32K--;
                 VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_32K, &(pstMem->stNode));
@@ -1151,11 +1148,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                    return NULL;
                }
                
-               VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+               VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                pstMem->ulLineNum =  ulLine;
                pstMem->ulIdle        =  VOS_MEM_USED;
                pstMem->ulMid        =  ulMid;
-               pcMemBuf                =  pstMem->ucmmbuf;
+               pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                
                g_stmmMgmt.ulFNum_64K--;
                VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_64K, &(pstMem->stNode));
@@ -1180,11 +1177,11 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
                    return NULL;
                }
                
-               VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+               VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName));
                pstMem->ulLineNum =  ulLine;
                pstMem->ulIdle        =  VOS_MEM_USED;
                pstMem->ulMid        =  ulMid;
-               pcMemBuf                =  pstMem->ucmmbuf;
+               pcMemBuf                =  (VOID *)pstMem->ucmmbuf;
                
                g_stmmMgmt.ulFNum_128K--;
                VOS_Node_TailAdd(&g_stmmMgmt.stMMListU_128K, &(pstMem->stNode));
@@ -1197,14 +1194,14 @@ CHAR *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, CHAR *pcFileName, INT32 ulLi
     {       
             /*字节对齐??*/
             ulSysBufSize = sizeof(VOS_MEMBUF_UNIT_S) + ulBufSize;
-            pcMemBuf = (CHAR *)malloc(ulSysBufSize);
+            pcMemBuf = malloc(ulSysBufSize);
             pstMem = (VOS_MEMBUF_UNIT_S *)pcMemBuf;
-            VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, pcFileName, VOS_StrLen(pcFileName));
+            VOS_Mem_Copy_S(pstMem->acFileName, VOS_FILEPATH_MAXLEN, (VOID *)pcFileName, VOS_StrLen((CHAR *)pcFileName)); 
             pstMem->ulLineNum   =  ulLine;
             pstMem->ulIdle      =  VOS_MEM_USED;
             pstMem->ulMid       =  ulMid;
             pstMem->ulBufType   =  VOS_MEM_TYPE_SYS;
-            pcMemBuf            =  pstMem->ucmmbuf;
+            pcMemBuf            =  (VOID *)pstMem->ucmmbuf;
 
             VOS_Printf("/****BigMemory Warning!:VOS_Malloc() used the system malloc(), [%s:%d]=[%p], memsize=%d",
                 pcFileName, ulLine, pstMem, ulBufSize);
@@ -1254,8 +1251,6 @@ VOID VOS_MemFree_X(CHAR *pcMemBuf)
         VOS_Node_TailAdd(&g_stmmMgmt.stMMListF_16K, &(pstMem->stNode));        
         g_stmmMgmt.ulFNum_16K++;
         VOS_RWLOCK_UNLOCK(g_stmmLock16K);
-        printf("<======VOS_MemFree_X 16K_buf status usednum=%d, freenum=%d\n",
-           g_stmmMgmt.ulUNum_16K, g_stmmMgmt.ulFNum_16K);
     }
     else if ( VOS_MEM_TYPE_64 == pstMem->ulBufType )
     {

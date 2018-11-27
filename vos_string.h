@@ -44,6 +44,7 @@ CHAR *VOS_Strrchr(const CHAR *pcString, const CHAR chEndChr);
 
 CHAR *VOS_Strchr(const CHAR *pcString, const CHAR chStartChr);
 
+#define VOS_PRINT(format, ...) VOS_Printf((CHAR *)format, ##__VA_ARGS__)
 
 #endif
 
