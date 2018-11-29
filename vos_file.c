@@ -616,6 +616,7 @@ LONG VOS_FileRead(CHAR *pcFilename, INT32 *pcLen, UCHAR **ppucData )
     int i = 0;
     int cur_len = 0;
     int iFile = 0;
+    void *pvMem = NULL;
     
 #if VOS_PLAT_LINUX
     iFile = open(pcFilename, O_RDONLY);
@@ -624,12 +625,14 @@ LONG VOS_FileRead(CHAR *pcFilename, INT32 *pcLen, UCHAR **ppucData )
 
     while (VOS_TRUE)
     {
-        *ppucData = realloc( *ppucData, iStep*(i+1));
-        if ( ppucData == NULL )
+        pvMem = realloc(*ppucData, iStep*(i+1));
+        if ( pvMem == NULL )
         {
             close(iFile);
             return VOS_ERR;
         }
+        
+        *ppucData = (UCHAR *)pvMem;
 
         cur_len = read( iFile, *ppucData+(iStep*i), iStep);
         if ( cur_len == 0 )

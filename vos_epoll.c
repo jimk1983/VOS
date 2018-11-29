@@ -153,7 +153,7 @@ INT32 VOS_EPOLL_Wait(INT32 lEpollFd, VOS_EPOLL_WAIT_EVT_S *pstWaitEvent, INT32 l
     
     if (0 < lRet )
     {
-        for(ulIndex=0;ulIndex < lRet; ulIndex++)
+        for(ulIndex=0;ulIndex < (ULONG)lRet; ulIndex++)
         {
             /*获取对应的事件socket fd*/
             pstWaitEvent->astEevent[ulIndex].lSockFd = astEvents[ulIndex].data.fd;

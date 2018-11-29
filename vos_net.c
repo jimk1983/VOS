@@ -611,7 +611,7 @@ int readNlSock(int sockFd, char *bufPtr, int seqNum, int pId)
          
      break;   
     }   
-  } while((nlHdr->nlmsg_seq != seqNum) || (nlHdr->nlmsg_pid != pId));   
+  } while((nlHdr->nlmsg_seq != (unsigned int)seqNum) || (nlHdr->nlmsg_pid != (unsigned int)pId));   
   #endif
   return msgLen;   
 }   
@@ -934,14 +934,15 @@ VOID VOS_atom(CHAR *pcMacStr, CHAR *MacAddr)
 }
 
 /*将Mac地址转换为字符串00:00:00:00:00:00格式*/
-CHAR *VOS_mtoa (const UCHAR *pucMacAddr)
+UCHAR *VOS_mtoa (UCHAR *pucMacAddr)
 {
-    static CHAR pcBuffer[18] = {0};
+    static UCHAR pcBuffer[18] = {0};
     
     VOS_Mem_Zero(pcBuffer, sizeof (pcBuffer));
     
-    VOS_Snprintf ((UCHAR *)pcBuffer, 18, "%02X:%02X:%02X:%02X:%02X:%02X",
-              pucMacAddr[0],pucMacAddr[1],pucMacAddr[2],pucMacAddr[3],pucMacAddr[4],pucMacAddr[5]);
+    VOS_Snprintf((UCHAR *)pcBuffer, 18, "%02X:%02X:%02X:%02X:%02X:%02X",
+              pucMacAddr[0],pucMacAddr[1],pucMacAddr[2],
+              pucMacAddr[3],pucMacAddr[4],pucMacAddr[5]);
     
     return pcBuffer;
 }

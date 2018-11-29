@@ -288,7 +288,7 @@ INT32   VOS_GetInnerIPMacAddr(VOS_IPADDR_T uiIPAddr, UCHAR *pcMacAddr)
             pstArpTbl->astArrayArpTbl[uiCount].acDevName);
 
          /*通过地址判断是否相等*/
-        if (  inet_aton(pstArpTbl->astArrayArpTbl[uiCount].acIpAddr, &stIpaddr) == uiIPAddr )
+        if (  inet_aton(pstArpTbl->astArrayArpTbl[uiCount].acIpAddr, &stIpaddr) == (INT32)uiIPAddr )
         {
             VOS_Mem_Copy_S((CHAR *)pcMacAddr, 
                     32, 

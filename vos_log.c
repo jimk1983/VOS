@@ -67,13 +67,13 @@ VOID VOS_PrintDebug(const CHAR *pcformat, ...)
 /*≤ª Õ∑≈¡À*/
 LONG VOS_Log_Init()
 {
-    if ( VOS_ERR == VOS_FileCreate(DEFAULT_LOGFILE) )
+    if ( VOS_ERR == VOS_FileCreate((CHAR *)DEFAULT_LOGFILE) )
     {
         VOS_Printf("Default vos logfile[%s] create error!", DEFAULT_LOGFILE);
         return VOS_ERR;
     }
     
-    if ( VOS_ERR == VOS_FileCreate(DEFAULT_RCTLOGFILE) )
+    if ( VOS_ERR == VOS_FileCreate((CHAR *)DEFAULT_RCTLOGFILE) )
     {
         VOS_Printf("Default rct logfile[%s] create error!", DEFAULT_LOGFILE);
         return VOS_ERR;

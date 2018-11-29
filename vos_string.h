@@ -22,9 +22,9 @@
 /*定义最长的字符串安全操作长度*/
 #define VOS_MAXSTRLEN       16384
 
-VOID VOS_Printf(CHAR *pcformat,...);
+VOID VOS_Printf(const CHAR *pcformat,...);
 
-INT32 VOS_Snprintf(UCHAR *pcbuf, UINT32 ulMaxLen, CHAR *pcformat,...);
+INT32 VOS_Snprintf(UCHAR *pcbuf, UINT32 ulMaxLen,const CHAR *pcformat,...);
 
 INT32 VOS_StrCmp(CHAR *pcString1,CHAR *pcString2);
 

@@ -18,13 +18,13 @@
 ******************************************************************************/
 #include <vos_pub.h>
 
-VOS_THREAD_T VOS_Thread_Create(CHAR *pcName, VOID(* pfvThread)(VOID *arg), VOID *pvArg, INT32 iStacksize, INT32 iPrio)
+VOS_THREAD_T VOS_Thread_Create(CHAR *pcName, VOID *(* pfvThread)(VOID *arg), VOID *pvArg, INT32 iStacksize, INT32 iPrio)
 {
     VOS_THREAD_T handle = 0 ;
 
 #if VOS_PLAT_LINUX
     LONG lRet = 0;
-    lRet = pthread_create(&handle, NULL, (VOID *)pfvThread, pvArg);
+    lRet = pthread_create(&handle, NULL, pfvThread, pvArg);
     if ( 0 != lRet )
     {
         VOS_Printf("CreateThread failed!\n"); 

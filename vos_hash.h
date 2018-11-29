@@ -53,7 +53,7 @@ typedef struct tagVOSHashTable
     /*Hash表的值计算函数*/
     VOS_HASH_VALUE_FUNC      pfHashCode;
     /*选取的合适的素数数组大小*/
-    LONG                                 lPrime;
+    ULONG                    lPrime;
 }VOS_HASH_TABLE_S;
 
 
@@ -73,6 +73,6 @@ LONG   VOS_Hash_ULONGKeyGetData(VOS_HASH_TABLE_S *pstHashTbl, ULONG ulKey, VOID 
 LONG   VOS_Hash_StringKeySetData(VOS_HASH_TABLE_S *pstHashTbl, CHAR *pcString, VOID *pvData);
 LONG   VOS_Hash_StringKeyRemove(VOS_HASH_TABLE_S *pstHashTbl, CHAR *pcString);
 
-LONG   VOS_Hash_TablePrime(ULONG ulSize);
+ULONG   VOS_Hash_TablePrime(ULONG ulSize);
 
 

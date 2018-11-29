@@ -55,7 +55,7 @@ static ULONG g_ulPrimeArry[]={
 #define VOS_HASHTBL_PRIME_SIZE    (sizeof(g_ulPrimeArry) / sizeof(ULONG))
 
 /*Hash的素数表中选择合理的素数*/
-LONG VOS_Hash_TablePrime(ULONG ulSize)
+ULONG VOS_Hash_TablePrime(ULONG ulSize)
 {
     ULONG ulCount = VOS_HASHTBL_PRIME_SIZE;
     ULONG ulIndex = 0;
@@ -67,7 +67,7 @@ LONG VOS_Hash_TablePrime(ULONG ulSize)
         || (ulSize > VOS_HASHTABLE_SIZE_MAX) )
     {
         VOS_Printf("param error");
-        return VOS_ERR;
+        return 0;
     }
 
     for(ulIndex = 0;ulIndex < ulCount; ulIndex++)
@@ -484,7 +484,7 @@ VOS_HASH_TABLE_S *VOS_Hash_TableCreate(ULONG ulSize, VOS_HASH_COMP_FUNC pfHashCm
 
     /*选取合适的素数*/
     pstHashTbl->lPrime = VOS_Hash_TablePrime(ulSize);
-    if ( VOS_ERR == pstHashTbl->lPrime )
+    if ( 0 == pstHashTbl->lPrime )
     {
         free(pstHashTbl);
         return NULL;

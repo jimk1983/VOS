@@ -127,7 +127,7 @@ CHAR *VOS_StrNCpy_S(CHAR *pcDst, ULONG ulMaxLen,CHAR *pcSrc, ULONG ulLen)
 }
 
 /*打印函数, 限制字符串最大长度为16K*/
-VOID VOS_Printf(CHAR *pcformat,...)
+VOID VOS_Printf(const CHAR *pcformat,...)
 {
     va_list args_ptr;
     CHAR acbuf[VOS_MAXSTRLEN]= {0};   
@@ -151,7 +151,7 @@ VOID VOS_Printf(CHAR *pcformat,...)
 }
 
 /*拼接字符串*/
-INT32 VOS_Snprintf(UCHAR *pcBuf, UINT32 ulMaxLen, CHAR *pcFormat,...)
+INT32 VOS_Snprintf(UCHAR *pcBuf, UINT32 ulMaxLen,const CHAR *pcFormat,...)
 {
     va_list args_ptr;
     INT32 ulRet = 0;    
@@ -190,7 +190,7 @@ CHAR *VOS_StrStr(const CHAR *pcStr1, const CHAR *pcStr2)
         return NULL;
     }
 
-    pcStr = strstr(pcStr1, pcStr2);
+    pcStr = strstr((CHAR *)pcStr1, (CHAR *)pcStr2);
     
     return pcStr;
 }
@@ -220,7 +220,7 @@ CHAR *VOS_Strchr(const CHAR *pcString, const CHAR chStartChr)
         return NULL;
     }
 
-    pcStr = strchr(pcString, chStartChr);
+    pcStr = strchr((CHAR *)pcString, chStartChr);
     
     return pcStr;
 }
