@@ -1,8 +1,8 @@
 #公共部分
-#CC=gcc
-CC=g++
-#AR=ar cr
-AR=ar crv
+CC=gcc
+#CC=g++
+AR=ar cr
+#AR=ar crv
 CFLAGS=-c 
 MAKE=make
 RM=-rm -rf
