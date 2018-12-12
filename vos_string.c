@@ -130,18 +130,32 @@ CHAR *VOS_StrNCpy_S(CHAR *pcDst, ULONG ulMaxLen,CHAR *pcSrc, ULONG ulLen)
 VOID VOS_Printf(const CHAR *pcformat,...)
 {
     va_list args_ptr;
-    CHAR acbuf[VOS_MAXSTRLEN]= {0};   
-    
+    INT32 iRet = 0;
+    CHAR acbuf[VOS_MAXSTRLEN] = {0};   
+    VOS_LOCAL_SYSTEM_TIME_S stTime = {0};
+
     if(NULL == pcformat)
     {
         return;
     }
+
+    VOS_GetLocalSystemTime(&stTime);
+
+    /*非安全函数，一定要注意了，不要越界*/
+    iRet += snprintf(acbuf,VOS_MAXSTRLEN-1, "[%.04d-%.02d-%.02d %.02d:%.02d:%.02d %.06d] ",
+		stTime.uiYear,
+		stTime.uiMoth,
+		stTime.uiDay,
+		stTime.uiHour,
+		stTime.uiHour,
+		stTime.uiSecond,
+		stTime.uiMiliSec);
     
     va_start(args_ptr,pcformat);
     #if VOS_PLAT_LINUX
-    (VOID)vsnprintf(acbuf,VOS_MAXSTRLEN-1,pcformat,args_ptr);
+    (VOID)vsnprintf(acbuf+iRet,VOS_MAXSTRLEN-iRet,pcformat,args_ptr);
     #elif VOS_PLAT_WIN
-    (VOID)vsprintf_s(acbuf, VOS_MAXSTRLEN-1, pcformat,args_ptr);
+    (VOID)vsprintf_s(acbuf+iRet, VOS_MAXSTRLEN-1, pcformat,args_ptr);
     #endif
     va_end(args_ptr);
     

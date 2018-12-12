@@ -100,8 +100,6 @@ VOID VOS_GetLocalSystemTime(VOS_LOCAL_SYSTEM_TIME_S *pstSysTime)
     /*获取年月日,时分秒*/
     pstTime  = localtime(&t);
 
-    /*获取毫秒时间*/
-    gettimeofday(&tv, NULL);
 
     pstSysTime->uiYear       =  pstTime->tm_year + 1900;
     pstSysTime->uiMoth      =  pstTime->tm_mon + 1;
@@ -110,6 +108,10 @@ VOID VOS_GetLocalSystemTime(VOS_LOCAL_SYSTEM_TIME_S *pstSysTime)
     pstSysTime->uiHour      =  pstTime->tm_hour;
     pstSysTime->uiMinute   =  pstTime->tm_min;
     pstSysTime->uiSecond   =  pstTime->tm_sec;
+    
+    /*获取毫秒时间*/
+    gettimeofday(&tv, NULL);
+    
     pstSysTime->uiMiliSec   =  tv.tv_usec;
 
     return;

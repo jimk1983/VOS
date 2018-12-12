@@ -23,10 +23,10 @@ extern "C" {
 
 #include <vos_config.h>
 #include <vos_basetype.h>
+#include <vos_time.h>
 #include <vos_string.h>
 #include <vos_malloc.h>
 #include <vos_utils.h>
-#include <vos_time.h>
 #include <vos_mutex.h>
 #include <vos_dlist.h>
 #include <vos_que.h>

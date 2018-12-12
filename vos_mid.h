@@ -65,7 +65,7 @@
 
 
 
-/**/
+/*命令行模块*/
 #define CLI_MID                                0x00040000
 #define CLI_MID_SID_SET(SID)         (CLI_MID  | SID )           
 #define CLI_MID_INI                         CLI_MID_SID_SET(0x01)             /*0x00010001--表示INI模块使用的内存*/
@@ -148,5 +148,13 @@
 #define VSNAT_MID_SID_SET(SID)        (VSNAT_MID| SID )
 #define VSNAT_MID_SID_INI                 VSNAT_MID_SID_SET(0x0001)          
 #define VSNAT_MID_SID_MSG               VSNAT_MID_SID_SET(0x0002)          
+
+
+
+/*RDS模块*/
+#define RDS_MID                                0x100C0000
+#define RDS_MID_SID_SET(SID)         (RDS_MID  | SID )           
+#define RDS_MID_INI                         RDS_MID_SID_SET(0x01)             /*0x00010001--表示INI模块使用的内存*/
+#define RDS_MID_MSG                         RDS_MID_SID_SET(0x02)   
 
 

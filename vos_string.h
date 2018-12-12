@@ -20,7 +20,7 @@
 #define _VOS_STRING_H_
 
 /*定义最长的字符串安全操作长度*/
-#define VOS_MAXSTRLEN       16384
+#define VOS_MAXSTRLEN       1024
 
 VOID VOS_Printf(const CHAR *pcformat,...);
 
