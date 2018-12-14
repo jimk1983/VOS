@@ -48,16 +48,16 @@
 
 INT32 VOS_MemMgmt_Init();
 
-VOID VOS_MemMgmt_UnInit();
+VOID  VOS_MemMgmt_UnInit();
 
-VOID *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, const CHAR *pcFileName, INT32 ulLine);
+VOID* VOS_MemCreate_X(ULONG ulMid, UINT32 ulBufSize, const CHAR *pcFileName, INT32 ulLine);
 
-VOID VOS_MemFree_X(CHAR *pcMemBuf);
+VOID  VOS_MemFree_X(CHAR *pcMemBuf);
 
-VOID VOS_MM_MidTypeShow(UINT32 uiType,  UINT32 uiMid);
+VOID  VOS_MM_MidTypeShow(UINT32 uiType,  UINT32 uiMid);
 
-VOID VOS_MM_TypeShow(UINT32 uiType);
+VOID  VOS_MM_TypeShow(UINT32 uiType);
 
-VOID VOS_MM_Show();
+VOID  VOS_MM_Show();
 
 

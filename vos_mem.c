@@ -801,7 +801,7 @@ VOID VOS_MemMgmt_UnInit()
     修改内容   : 新生成函数
 
 *****************************************************************************/
-VOID *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, const CHAR *pcFileName, INT32 ulLine)
+VOID *VOS_MemCreate_X(ULONG ulMid, UINT32 ulBufSize, const CHAR *pcFileName, INT32 ulLine)
 {   
     ULONG ulSysBufSize       = 0;
     VOID *pcMemBuf          = NULL;
@@ -1205,7 +1205,6 @@ VOID *VOS_MemCreate_X(ULONG ulMid, INT32 ulBufSize, const CHAR *pcFileName, INT3
 
             VOS_Printf("/****BigMemory Warning!:VOS_Malloc() used the system malloc(), [%s:%d]=[%p], memsize=%d",
                 pcFileName, ulLine, pstMem, ulBufSize);
-            
     }
 
     return pcMemBuf;
